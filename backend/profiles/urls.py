@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import RegisterView
+from .views import ProfileView,AddUserSkillView,MySkillsView
 
-urlpatters=[
-    path("register/" ,RegisterView.as_view(),name="Register View" )
-    
+urlpatterns = [
+    path("profile/", ProfileView.as_view()),
+    path("skills/add/",AddUserSkillView.as_view()),
+    path("skills/",MySkillsView.as_view()),
 ]

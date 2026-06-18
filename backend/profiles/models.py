@@ -11,7 +11,7 @@ class Skill(models.Model):
         return self.name
     
 
-class DeveloperProfile(models.Model):
+class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     skills=models.ManyToManyField(Skill,blank=True)
     bio=models.TextField(blank=True)
@@ -26,7 +26,21 @@ class DeveloperProfile(models.Model):
 
 
     def __str__(self):
-        return self.username
+        return self.user.username
     
+class UserSkill(models.Model):
+    LEVEL_CHOICES=[
+        ("beginner","begineer"),
+        ("intermediate","intermediate"),
+        ("advanced","advanced")
+    ]    
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="skills")
+    skill=models.ForeignKey(Skill,on_delete=models.CASCADE)
+    level=models.CharField(max_length=20,choices=LEVEL_CHOICES,default="begineer")
 
+    class Meta:
+        unique_together=("user","skill")
+
+    def __str__(self):
+        return f"{self.user}-{self.skill} ({self.level})"
 

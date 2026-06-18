@@ -1,19 +1,19 @@
 from rest_framework import serializers
-from .models import User
+from .models import Profile,Skill,UserSkill
 
 
-class RegisterSerializer(serializers.ModelSerializer):
-    password=serializers.CharField(write_only=True)
-
+class SkillSerializer(serializers.ModelSerializer):
     class Meta:
-        model=User
-        fields=("username","email","password","role")
+        model=Skill
+        fields=["id","name"]
 
-    def create(self,validated_data):
-        user=User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            role=validated_data.get("role","developer")
-        )
-        return user
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Profile
+        fields=["id","bio","avatar","github","location","linkedin","website","skills"]
+
+class UserSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=UserSkill
+        fields=["id", "skill", "level"]
+

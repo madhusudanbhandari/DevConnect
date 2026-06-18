@@ -17,3 +17,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             role=validated_data.get("role","developer")
         )
         return user
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+
+        
+        fields=("id","username","email","role")
