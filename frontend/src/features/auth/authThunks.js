@@ -13,7 +13,33 @@ export const loginUser=(form)=>async(dispatch)=>{
                 accessToken:res.data.access,
             })
         );    
+        
     }catch(err){
-        console.log(err);
+        throw err;
     }
+};
+
+
+export const registerUser=(form)=>async(dispatch)=>{
+    try{
+        await axiosInstance.post("auth/register/",{
+            username:form.username,
+            email:form.email,
+            password:form.password,
+
+        });
+        const loginRes=await axiosInstance.post("auth/login/",{
+            username:form.username,
+            password:form.password,
+        });
+        dispatch(
+            loginSuccess({
+                user:form.username,
+                accessToken:loginRes.data.access,
+            })
+        );
+    }catch(err){
+        throw err;
+    }
+
 };
