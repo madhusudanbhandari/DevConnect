@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { fetchProfile } from "../features/profile/profileThunk";
+import { Link } from "react-router-dom";
 
 export default function Profile(){
     const dispatch=useDispatch();
@@ -43,6 +44,10 @@ export default function Profile(){
           <span>📍</span>
           <span>{profile.location || "Location not specified"}</span>
         </div>
+
+        <Link to="/complete-profile" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+          Complete Profile
+        </Link>
 
       </div>
     </div>
