@@ -8,9 +8,11 @@ class SkillSerializer(serializers.ModelSerializer):
         fields=["id","name"]
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username=serializers.CharField(source="user.username",read_only=True)
+    
     class Meta:
         model=Profile
-        fields=["id","bio","avatar","github","location","linkedin","website","skills"]
+        fields=["id","username","bio","avatar","github","location","linkedin","website","skills"]
 
 class UserSkillSerializer(serializers.ModelSerializer):
     class Meta:
