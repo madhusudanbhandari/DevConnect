@@ -4,6 +4,7 @@ import Register from "./pages/Register"
 import Profile from "./pages/Profile"
 import CompleteProfile from "./pages/CompleteProfile"
 import Dashboard from "./pages/Dashboard"
+import AddSkill from "./pages/AddSkill"
 
 export default function App(){
     return(
@@ -14,6 +15,7 @@ export default function App(){
             <Route path="/dashboard" element={<Dashboard/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>
             <Route path="/complete-profile" element={<CompleteProfile/>}></Route>
+            <Route path="/add-skill" element={<AddSkill/>}></Route>
         </Routes>
         </BrowserRouter>
     )

@@ -6,10 +6,24 @@ export default function Dashboard() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate=useNavigate()
+    const[myskills,setMySkills]=useState(null);
 
     useEffect(() => {
         fetchDashboard();
     }, []);
+
+    useEffect(()=>{
+        getSkills();
+        
+    })
+    const getSkills=async()=>{
+        try{
+            const res=await axiosInstance.get("profiles/skills/");
+            setMySkills(res.data);
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     const fetchDashboard = async () => {
         try {
@@ -38,7 +52,7 @@ export default function Dashboard() {
         );
     }
 
-    const { user, profile, stats, suggested_developers } = data;
+    const { user, profile, stats, suggested_developers} = data;
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -84,7 +98,7 @@ export default function Dashboard() {
                                 Edit Profile
                             </button>
 
-                            <button  className="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900">
+                            <button onClick={()=>navigate("/add-skill")} className="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900">
                                 Add Skills
                             </button>
 
@@ -96,23 +110,23 @@ export default function Dashboard() {
 
                 </div>
 
-                {/* CENTER SECTION */}
+               
                 <div className="space-y-6">
 
-                    {/* SKILLS */}
+                   
                     <div className="bg-white rounded-xl shadow p-5">
                         <h2 className="text-lg font-semibold mb-3">
                             🧠 Skills
                         </h2>
 
-                        {profile.skills && profile.skills.length > 0 ? (
+                        {myskills && myskills.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
-                                {profile.skills.map((skill, index) => (
+                                {myskills.map((skills, index) => (
                                     <span
                                         key={index}
-                                        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                                        className="bg-blue-100 text-blue-700 px-10 py-3 rounded-full text-sm"
                                     >
-                                        {skill.name}
+                                        {skills.skill}
                                     </span>
                                 ))}
                             </div>
@@ -123,7 +137,7 @@ export default function Dashboard() {
                         )}
                     </div>
 
-                    {/* STATS */}
+
                     <div className="bg-white rounded-xl shadow p-5">
                         <h2 className="text-lg font-semibold mb-3">
                             📊 Stats
@@ -143,11 +157,8 @@ export default function Dashboard() {
                     </div>
 
                 </div>
-
-                {/* RIGHT SECTION */}
                 <div className="space-y-6">
 
-                    {/* SUGGESTED DEVELOPERS */}
                     <div className="bg-white rounded-xl shadow p-5">
                         <h2 className="text-lg font-semibold mb-3">
                             🔥 Suggested Developers
@@ -182,7 +193,7 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* PROFILE TIP CARD */}
+                   
                     <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl shadow p-5">
                         <h2 className="font-semibold text-lg">
                             🚀 Improve your profile
