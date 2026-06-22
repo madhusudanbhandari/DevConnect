@@ -11,4 +11,4 @@ class ProfileAdmin(admin.ModelAdmin):
         return obj.user.username
     
     def get_skills(self, obj):
-        return obj.skills.all()
+        return obj.skills.name
