@@ -22,7 +22,7 @@ export default function Login(){
         try{
          await dispatch(loginUser(form));
             setMessage("Login Successfull")
-            navigate("/profile")
+            navigate("/dashboard")
             setError("");
         }catch(err){
             setMessage("")

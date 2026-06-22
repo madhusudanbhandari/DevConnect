@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom"
 import axiosInstance from "../api/axios";
 
 
 export default function CompleteProfile(){
     const navigate=useNavigate();
+    const[msg,setMsg]=useState("");
+    const[err,setErr]=useState("");
 
     const[form,setForm]=useState({
         full_name:"",
@@ -28,14 +30,16 @@ export default function CompleteProfile(){
 
         try{
             await axiosInstance.put(
-                "profile/",
+                "profiles/profile/",
                 form
             );
-            navigate("/profile");
+            setMsg("Registration successfull")
+            setErr("")
+            navigate("/dashboard");
         }catch(err){
-            toast.error(
-                "Failed to save profile"
-            )
+            setErr("Registration Failed")
+            console.log(err.response?.data);
+            setMsg("")
 
         }
     }
@@ -52,6 +56,8 @@ export default function CompleteProfile(){
         <h2 className="text-2xl font-bold">
           Complete Your Profile
         </h2>
+        {msg && <p>{msg}</p>}
+        {err && <p>{err}</p>}
 
         <input
           name="full_name"

@@ -50,7 +50,7 @@ export default function Profile(){
         </Link>
 
       </div>
-    </div>
+    </div>ss
   </div>
 );
 

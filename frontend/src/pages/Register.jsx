@@ -23,10 +23,9 @@ export default function Register(){
         e.preventDefault();
         try{
          await dispatch(registerUser(form));
-        console.log("Registration Successfull")
-        navigate("/");
-        setMsg("Registration Successfull");
-        setError("");
+         setMsg("Registration Successfull");
+         navigate("/");
+         setError("");
         }catch(err){
             setError("Registration Failed")
             setMsg("");
