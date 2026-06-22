@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar";
 
 export default function Dashboard() {
     const [data, setData] = useState(null);
@@ -55,157 +56,173 @@ export default function Dashboard() {
     const { user, profile, stats, suggested_developers} = data;
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            
-            <div className="bg-white shadow p-6">
-                <h1 className="text-2xl font-bold text-gray-800">
-                    👋 Welcome back, {user.username}
-                </h1>
-                <p className="text-gray-500">
-                    Role: {user.role || "Developer"}
-                </p>
+       
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
+         <Navbar/>
+        {/* Top Header */}
+        <div className="bg-white/80 backdrop-blur border-b sticky top-0 z-10">
+            <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-800">
+                        👋 Welcome back, {user.username}
+                    </h1>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Build. Connect. Grow your developer network.
+                    </p>
+                </div>
+
+                <div className="text-right">
+                    <p className="text-xs text-gray-400">Role</p>
+                    <p className="font-semibold text-gray-700">
+                        {user.role || "Developer"}
+                    </p>
+                </div>
             </div>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+        {/* Main Container */}
+        <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                
-                <div className="space-y-6">
+            {/* LEFT COLUMN */}
+            <div className="space-y-6">
 
-                   
-                    <div className="bg-white rounded-xl shadow p-5">
-                        <h2 className="text-lg font-semibold mb-3">
-                            👤 Profile Overview
-                        </h2>
+                {/* Profile Card */}
+                <div className="bg-white rounded-2xl shadow-sm border p-6 hover:shadow-md transition">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                        👤 Profile Overview
+                    </h2>
 
-                        <div className="space-y-2 text-gray-700 text-sm">
-                            <p><span className="font-semibold">Email:</span> {user.email}</p>
-                            <p><span className="font-semibold">Bio:</span> {profile.bio || "Not added"}</p>
-                            <p><span className="font-semibold">Location:</span> {profile.location || "Not set"}</p>
+                    <div className="space-y-3 text-sm text-gray-600">
+                        <div>
+                            <p className="text-xs text-gray-400">Email</p>
+                            <p className="font-medium">{user.email}</p>
                         </div>
 
+                        <div>
+                            <p className="text-xs text-gray-400">Bio</p>
+                            <p>{profile.bio || "No bio added yet"}</p>
+                        </div>
 
-                       
-                    </div>
-
-                  
-                    <div className="bg-white rounded-xl shadow p-5">
-                        <h2 className="text-lg font-semibold mb-3">
-                            ⚡ Quick Actions
-                        </h2>
-
-                        <div className="space-y-2">
-                            <button onClick={()=>navigate("/complete-profile")} className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-                                Edit Profile
-                            </button>
-
-                            <button onClick={()=>navigate("/add-skill")} className="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900">
-                                Add Skills
-                            </button>
-
-                            <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
-                                Find Developers
-                            </button>
+                        <div>
+                            <p className="text-xs text-gray-400">Location</p>
+                            <p>{profile.location || "Not set"}</p>
                         </div>
                     </div>
-
                 </div>
 
                
-                <div className="space-y-6">
 
-                   
-                    <div className="bg-white rounded-xl shadow p-5">
-                        <h2 className="text-lg font-semibold mb-3">
-                            🧠 Skills
-                        </h2>
+            </div>
 
-                        {myskills && myskills.length > 0 ? (
-                            <div className="flex flex-wrap gap-2">
-                                {myskills.map((skills, index) => (
-                                    <span
-                                        key={index}
-                                        className="bg-blue-100 text-blue-700 px-10 py-3 rounded-full text-sm"
-                                    >
-                                        {skills.skill}
-                                    </span>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-gray-500 text-sm">
-                                No skills added yet
-                            </p>
-                        )}
-                    </div>
+            {/* MIDDLE COLUMN */}
+            <div className="space-y-6">
 
+                {/* Skills */}
+                <div className="bg-white rounded-2xl shadow-sm border p-6">
+                    <h2 className="text-lg font-semibold mb-4">
+                        🧠 Skills
+                    </h2>
 
-                    <div className="bg-white rounded-xl shadow p-5">
-                        <h2 className="text-lg font-semibold mb-3">
-                            📊 Stats
-                        </h2>
-
-                        <div className="grid grid-cols-2 gap-4 text-center">
-                            <div className="bg-gray-100 p-4 rounded-lg">
-                                <p className="text-xl font-bold">{stats.connections}</p>
-                                <p className="text-sm text-gray-500">Connections</p>
-                            </div>
-
-                            <div className="bg-gray-100 p-4 rounded-lg">
-                                <p className="text-xl font-bold">{stats.projects}</p>
-                                <p className="text-sm text-gray-500">Projects</p>
-                            </div>
+                    {myskills && myskills.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                            {myskills.map((skills, index) => (
+                                <span
+                                    key={index}
+                                    className="px-3 py-1 text-sm rounded-full bg-blue-50 text-blue-700 border border-blue-200"
+                                >
+                                    {skills.skill}
+                                </span>
+                            ))}
                         </div>
-                    </div>
-
-                </div>
-                <div className="space-y-6">
-
-                    <div className="bg-white rounded-xl shadow p-5">
-                        <h2 className="text-lg font-semibold mb-3">
-                            🔥 Suggested Developers
-                        </h2>
-
-                        <div className="space-y-3">
-                            {suggested_developers.length > 0 ? (
-                                suggested_developers.map((dev, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center justify-between border-b pb-2"
-                                    >
-                                        <div>
-                                            <p className="font-semibold">
-                                                {dev.username}
-                                            </p>
-                                            <p className="text-xs text-gray-500">
-                                                {dev.role || "Developer"}
-                                            </p>
-                                        </div>
-
-                                        <button className="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg">
-                                            Connect
-                                        </button>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-500 text-sm">
-                                    No suggestions yet
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                   
-                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl shadow p-5">
-                        <h2 className="font-semibold text-lg">
-                            🚀 Improve your profile
-                        </h2>
-                        <p className="text-sm mt-2">
-                            Add skills and projects to increase visibility and get more connections.
+                    ) : (
+                        <p className="text-sm text-gray-400">
+                            No skills added yet
                         </p>
-                    </div>
+                    )}
+                </div>
 
+                {/* Stats */}
+                <div className="bg-white rounded-2xl shadow-sm border p-6">
+                    <h2 className="text-lg font-semibold mb-4">
+                        📊 Stats
+                    </h2>
+
+                    <div className="grid grid-cols-2 gap-4">
+
+                        <div className="p-4 rounded-xl bg-gray-50 border text-center">
+                            <p className="text-2xl font-bold text-gray-800">
+                                {stats.connections}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Connections
+                            </p>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-gray-50 border text-center">
+                            <p className="text-2xl font-bold text-gray-800">
+                                {stats.projects}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Projects
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>
+
+            {/* RIGHT COLUMN */}
+            <div className="space-y-6">
+
+                {/* Suggested Developers */}
+                <div className="bg-white rounded-2xl shadow-sm border p-6">
+                    <h2 className="text-lg font-semibold mb-4">
+                        🔥 Suggested Developers
+                    </h2>
+
+                    <div className="space-y-3">
+                        {suggested_developers.length > 0 ? (
+                            suggested_developers.map((dev, index) => (
+                                <div
+                                    key={index}
+                                    className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition"
+                                >
+                                    <div>
+                                        <p className="font-medium text-gray-800">
+                                            {dev.username}
+                                        </p>
+                                        <p className="text-xs text-gray-400">
+                                            {dev.role || "Developer"}
+                                        </p>
+                                    </div>
+
+                                    <button className="text-xs px-3 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                                        Connect
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-sm text-gray-400">
+                                No suggestions yet
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Motivational Card */}
+                <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl shadow p-6">
+                    <h2 className="text-lg font-semibold">
+                        🚀 Improve your profile
+                    </h2>
+                    <p className="text-sm mt-2 text-white/90">
+                        Add skills, projects, and bio to increase visibility and get more connections.
+                    </p>
+                </div>
+
+            </div>
+
         </div>
-    );
+    </div>
+);
 }
