@@ -30,7 +30,7 @@ export default function Navbar() {
                     </Link>
 
                     <Link
-                        to="/find"
+                        to="/find-developer"
                         className="text-gray-600 hover:text-blue-600 transition"
                     >
                         Find Developers
