@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'dashboard',
     'profiles.apps.ProfilesConfig',
     'corsheaders',
+    'connections',
 
 ]
 
