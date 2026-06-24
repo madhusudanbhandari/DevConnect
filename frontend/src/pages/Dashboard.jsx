@@ -8,11 +8,14 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [myskills, setMySkills] = useState(null);
   const [connections, setConnections] = useState([]);
+  const [posts, setPosts] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => { fetchDashboard(); }, []);
   useEffect(() => { getSkills(); }, []);
   useEffect(() => { getConnections(); }, []);
+  useEffect(() => { fetchPosts(); }, []);
 
   const fetchDashboard = async () => {
     try {
@@ -40,6 +43,15 @@ export default function Dashboard() {
       setConnections(res.data);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const res = await axiosInstance.get("posts/feed/");
+      setPosts(res.data);
+    } catch (err) {
+      console.log(err?.response?.data);
     }
   };
 
@@ -85,12 +97,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6">
 
+        {/* LEFT SIDEBAR */}
         <div className="col-span-3 space-y-5">
 
-        
+          {/* Profile Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <div className="flex flex-col items-center text-center mb-4">
               <div className="w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold mb-3">
@@ -119,6 +131,7 @@ export default function Dashboard() {
             </button>
           </div>
 
+          {/* Stats Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Stats</h2>
             <div className="grid grid-cols-2 gap-3">
@@ -133,13 +146,14 @@ export default function Dashboard() {
             </div>
           </div>
 
+          {/* Skills Card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-3">Skills</h2>
             {myskills && myskills.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {myskills.map((s, i) => (
+                {myskills.map((s) => (
                   <span
-                    key={i}
+                    key={s.id}
                     className="px-3 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-100"
                   >
                     {s.skill}
@@ -153,13 +167,13 @@ export default function Dashboard() {
 
         </div>
 
-              
+        {/* CENTER FEED */}
         <div className="col-span-6 space-y-5">
 
-          
+          {/* Post Box */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <div className="flex items-start gap-3">
-               <div className="w-13 h-13 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold mb-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold shrink-0">
                 {getInitials(user.username)}
               </div>
               <textarea
@@ -170,38 +184,73 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
               <button
-                onClick={()=>navigate("/post")}
-                className="text-sm font-semibold bg-indigo-600 text-white px-5 py-2 rounded-xl hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                onClick={() => navigate("/post")}
+                className="text-sm font-semibold bg-indigo-600 text-white px-5 py-2 rounded-xl hover:bg-indigo-700 transition-colors"
               >
                 Post
               </button>
             </div>
           </div>
 
-      
+          {/* Feed */}
+          {posts.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-dashed border-gray-200 shadow-sm p-10 text-center">
+              <p className="text-4xl mb-3">📝</p>
+              <p className="text-base font-semibold text-gray-700">No posts yet</p>
+              <p className="text-sm text-gray-400 mt-1">Be the first to share something.</p>
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {posts.map((p) => (
+                <div
+                  key={p.id}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold shrink-0">
+                      {getInitials(p.username)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{p.username}</p>
+                      <p className="text-xs text-gray-400">
+                        {new Date(p.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
 
+                  <p className="text-sm text-gray-700">{p.post}</p>
 
-          <div className="bg-white rounded-2xl border border-dashed border-gray-200 shadow-sm p-10 text-center">
-            <p className="text-4xl mb-3">📝</p>
-            <p className="text-base font-semibold text-gray-700">No posts yet</p>
-            <p className="text-sm text-gray-400 mt-1">
-              Be the first to share something with your network.
-            </p>
-          </div>
+                  {p.photo && (
+                    <img
+                      src={p.photo}
+                      alt="post"
+                      className="mt-3 rounded-xl w-full max-h-72 object-cover"
+                    />
+                  )}
+
+                  {p.location && (
+                    <p className="text-xs text-gray-400 mt-2">📍 {p.location}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
         </div>
 
+        {/* RIGHT SIDEBAR */}
         <div className="col-span-3 space-y-5">
 
+          {/* Suggested Developers */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">
               🔥 Suggested Developers
             </h2>
             <div className="space-y-3">
               {suggested_developers.length > 0 ? (
-                suggested_developers.map((dev, i) => (
+                suggested_developers.map((dev) => (
                   <div
-                    key={i}
+                    key={dev.id}
                     className="flex items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-2">
@@ -227,7 +276,9 @@ export default function Dashboard() {
           {/* My Connections Preview */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">My Connections</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
+                My Connections
+              </h2>
               <button
                 onClick={() => navigate("/connections")}
                 className="text-xs text-indigo-500 font-medium hover:underline"
@@ -237,8 +288,8 @@ export default function Dashboard() {
             </div>
             {connections.length > 0 ? (
               <div className="space-y-3">
-                {connections.slice(0, 4).map((c, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                {connections.slice(0, 4).map((c) => (
+                  <div key={c.id} className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold shrink-0">
                       {getInitials(c.username)}
                     </div>
@@ -251,6 +302,7 @@ export default function Dashboard() {
             )}
           </div>
 
+          {/* Boost CTA */}
           <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl shadow p-5">
             <h2 className="text-base font-bold">🚀 Boost your profile</h2>
             <p className="text-sm mt-2 text-white/80">
