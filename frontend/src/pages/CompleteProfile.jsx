@@ -42,7 +42,7 @@ export default function CompleteProfile() {
   };
 
   const inputClass =
-    "w-full bg-white-900 border border-slate-700 text-slate-100 placeholder-slate-500 p-3 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all duration-200 text-sm";
+    "w-full bg-white-900 border border-slate-700 text-black placeholder-slate-500 p-3 rounded-lg focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all duration-200 text-sm";
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
