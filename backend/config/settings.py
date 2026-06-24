@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'corsheaders',
     'connections',
+    'posts',
 
 ]
 

@@ -23,4 +23,5 @@ urlpatterns = [
     path("api/profiles/",include("profiles.urls")),
     path("api/dashboard/",include("dashboard.urls")),
     path("api/connections/" ,include("connections.urls")),
+    path("api/posts/",include("posts.urls"))
 ]

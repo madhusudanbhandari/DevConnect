@@ -17,7 +17,7 @@ class SendConnectionView(APIView):
             from_user=request.user,
             to_user=to_user_id
         ).exists():
-            return Response({"message":"Request alredy sent"},status=400)
+            return Response({"message":"Request already sent"},status=400)
         
         Connection.objects.create(
             from_user=request.user,
@@ -26,7 +26,22 @@ class SendConnectionView(APIView):
 
         return Response({"message":"Request sent"})
     
+class PendingRequests(APIView):
+    permission_classes=[IsAuthenticated]
 
+    def get(self,request):
+        requests=Connection.objects.filter(
+            to_user=request.user,
+            status="pending"
+        )
+        data=[]
+
+        for req in requests:
+            data.append({
+                "id":req.id,
+                "from_user":req.from_user.username
+            })
+        return Response(data)
 
 class RespondConnectionRequest(APIView):
     permission_classes=[IsAuthenticated]
@@ -41,7 +56,7 @@ class RespondConnectionRequest(APIView):
         
         if action=="accept":
             conn.status="accepted"
-        elif action=="rejected":
+        elif action=="reject":
             conn.status="rejected"
 
         conn.save()
