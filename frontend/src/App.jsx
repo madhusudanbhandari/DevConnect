@@ -6,7 +6,7 @@ import CompleteProfile from "./pages/CompleteProfile"
 import Dashboard from "./pages/Dashboard"
 import AddSkill from "./pages/AddSkill"
 import FindDeveloper from "./pages/FindDeveloper"
-
+import Requests from "./pages/Requests"
 
 export default function App(){
     return(
@@ -19,6 +19,7 @@ export default function App(){
             <Route path="/complete-profile" element={<CompleteProfile/>}></Route>
             <Route path="/add-skill" element={<AddSkill/>}></Route>
             <Route path="/find-developer" element={<FindDeveloper/>}></Route>
+            <Route path="/requests" element={<Requests/>}></Route>
         </Routes>
         </BrowserRouter>
     )
